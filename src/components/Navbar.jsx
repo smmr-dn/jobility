@@ -37,53 +37,52 @@ const Navbar = () => {
           </span>
         </Link>
 
-        <div
-          className="w-full flex items-center px-3 justify-center md:w-auto"
-          id="navbar"
-        >
-          <ul
-            className={`flex bg-black list-none md:flex-row items-center justify-center md:space-x-8 md:mt-0 md:text-base md:font-medium md:border-0 bg-transparent`}
-          >
-            <li>
-              <Link
-                to="/"
-                className="pl-5 pr-4 rounded md:hover:bg-transparent uppercase  text-black md:p-0"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/discussion"
-                className=" pl-5 pr-4 rounded uppercase md:hover:bg-transparent text-black md:p-0"
-              >
-                Discussion
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/articles"
-                className="pl-5 pr-4 rounded uppercase md:hover:bg-transparent text-black md:p-0"
-              >
-                Articles
-              </Link>
-            </li>
-            <li>
-              <Link to="/create" state={{ order: true }}>
-                <button
-                  type="button"
-                  className="flex items-center hover:bg-white hover:text-black transition duration-300 border-2 hover:border-cyan-700 justify-center px-5 py-3  leading-normal text-white bg-cyan-700 border-cyan-700 rounded"
+                <div
+                    className="w-full flex items-center px-3 justify-center md:w-auto"
+                    id="navbar"
                 >
-                  <AiOutlinePlus size="20px" />
-                  Add
-                </button>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  );
+                    <ul
+                        className={`flex bg-black list-none md:flex-row items-center justify-center md:space-x-8 md:mt-0 md:text-base md:font-medium md:border-0 bg-transparent`}
+                    >
+                        <li>
+                            <Link
+                                to="/"
+                                className="pl-5 pr-4 rounded md:hover:bg-transparent uppercase  text-black md:p-0"
+                            >
+                                Home
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/discussion"
+                                className=" pl-5 pr-4 rounded uppercase md:hover:bg-transparent text-black md:p-0"
+                            >
+                                Discussion
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/articles"
+                                className="pl-5 pr-4 rounded uppercase md:hover:bg-transparent text-black md:p-0"
+                            >
+                                Articles
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/create" state={{ order: true }}>
+                                <button
+                                    type="button"
+                                    className="flex items-center hover:bg-white hover:text-black transition duration-300 border-2 hover:border-cyan-700 justify-center px-5 py-3  leading-normal text-white bg-cyan-700 border-cyan-700 rounded"
+                                >
+                                    Add &nbsp; <AiOutlinePlus size="20px" />
+                                </button>
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    );
 };
 
 export default Navbar;
