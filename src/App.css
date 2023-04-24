@@ -12,6 +12,10 @@ nav {
   width: 100%;
 }
 
+.nav-links {
+  justify-content: flex-end;
+}
+
 ul.navbar-scroll li a,
 ul.navbar-middle-scroll li a {
   text-decoration: none;

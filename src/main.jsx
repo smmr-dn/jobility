@@ -5,6 +5,7 @@ import "./index.css";
 import Layout from "./Layout";
 import JobCreate from "./components/JobCreate";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
+import JobPosts from "./components/JobPosts";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -13,6 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/" element={<Layout />}>
           <Route index element={<App />}></Route>
           <Route path="/create" element={<JobCreate />}></Route>
+          <Route path="/discussion" element={<JobPosts />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

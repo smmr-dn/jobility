@@ -29,11 +29,10 @@ const Layout = () => {
               <img id="logo-image" src="../src/img/suitcase.png" />
             </Link>
           </div>
-          <span class="spacer"></span>
-          <div>
+          <div className="nav-links">
             <Link to="/">Home</Link>
 
-            <Link to="#">See Discussions</Link>
+            <Link to="/discussion">See Discussions</Link>
 
             <Link to="#">Articles</Link>
 
