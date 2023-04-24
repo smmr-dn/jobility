@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../client";
 import { IonIcon } from "@ionic/react";
+import { Link } from "react-router-dom";
 
 const JobPosts = () => {
   useEffect(() => {
@@ -22,11 +23,13 @@ const JobPosts = () => {
       <div className="post-container">
         {jobDiscussions &&
           jobDiscussions.map((post) => (
-            <div className="post-card">
-              <p>{post.created_at}</p>
-              <h2>{post.title}</h2>
-              <p>{post.likes} likes</p>
-            </div>
+            <Link to={`/discussion/${post.id}`}>
+              <div className="post-card">
+                <p>{post.created_at}</p>
+                <h2>{post.title}</h2>
+                <p>{post.likes} likes</p>
+              </div>
+            </Link>
           ))}
       </div>
     </div>

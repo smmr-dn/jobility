@@ -4,8 +4,11 @@ import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 
 const JobCreate = () => {
+  const CDN =
+    "https://kittpqlkuxmuqhschiff.supabase.co/storage/v1/object/public/images/";
   const [newPost, setNewPost] = useState({});
   const [tag, setTag] = useState("");
+  const [imageURL, setImageURL] = useState("");
 
   const options = [
     { value: "agriculture", label: "Agriculture" },
@@ -27,8 +30,16 @@ const JobCreate = () => {
   };
 
   //HANDLE IMAGE UPLOADED
-  const handleImageUpload = (file) => {
-    console.log(file);
+  const handleImageUpload = async (file) => {
+    const { data, error } = await supabase.storage
+      .from("images")
+      .upload(file.name, file);
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    setImageURL(`${CDN}${data.path}`);
   };
 
   //SUBMIT FORM
@@ -41,12 +52,17 @@ const JobCreate = () => {
         title: newPost.title,
         created_at: new Date(),
         content: newPost.content,
+        imageURL: imageURL,
         tag: tag,
       })
       .select();
 
     window.location = "/";
   };
+
+  useEffect(() => {
+    console.log(imageURL);
+  }, [imageURL]);
 
   return (
     <div>
@@ -79,6 +95,8 @@ const JobCreate = () => {
         </div>
 
         <div className="pic-container">
+          {imageURL && <img id="display-profile" src={imageURL} />}
+
           <h2>Choose a picture</h2>
           <input
             type="file"
