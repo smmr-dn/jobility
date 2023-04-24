@@ -1,20 +1,32 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../client";
-import { IonIcon } from "@ionic/react";
+import { BsFillChatHeartFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const JobPosts = () => {
+  const [jobDiscussions, setJobDiscussions] = useState([]);
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      const { data } = await supabase.from("Post").select();
-
-      // set state of posts
-      setJobDiscussions(data);
-    };
-
     fetchPosts();
   }, []);
-  const [jobDiscussions, setJobDiscussions] = useState([]);
+
+  const fetchPosts = async () => {
+    const { data } = await supabase.from("Post").select();
+
+    // set state of posts
+    setJobDiscussions(data);
+  };
+
+  const onClickUpvote = async (likes, id) => {
+    const { data } = await supabase
+      .from("Post")
+      .update({
+        likes: likes + 1,
+      })
+      .eq("id", id);
+
+    fetchPosts();
+  };
 
   return (
     <div>
@@ -23,13 +35,16 @@ const JobPosts = () => {
       <div className="post-container">
         {jobDiscussions &&
           jobDiscussions.map((post) => (
-            <Link to={`/discussion/${post.id}`}>
-              <div className="post-card">
-                <p>{post.created_at}</p>
+            <div className="post-card">
+              <p>{post.created_at}</p>
+              <Link to={`/discussion/${post.id}`}>
                 <h2>{post.title}</h2>
-                <p>{post.likes} likes</p>
-              </div>
-            </Link>
+              </Link>
+              <p>{post.likes} likes</p>
+              <BsFillChatHeartFill
+                onClick={() => onClickUpvote(post.likes, post.id)}
+              ></BsFillChatHeartFill>
+            </div>
           ))}
       </div>
     </div>
