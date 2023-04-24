@@ -38,7 +38,7 @@ const Navbar = () => {
                 </Link>
 
                 <div
-                    className="w-full flex items-center justify-center md:w-auto"
+                    className="w-full flex items-center px-3 justify-center md:w-auto"
                     id="navbar"
                 >
                     <ul
@@ -54,7 +54,7 @@ const Navbar = () => {
                         </li>
                         <li>
                             <Link
-                                to="/discuss"
+                                to="/discussion"
                                 className=" pl-5 pr-4 rounded uppercase md:hover:bg-transparent text-black md:p-0"
                             >
                                 Discussion
@@ -69,13 +69,12 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/" state={{ order: true }}>
+                            <Link to="/create" state={{ order: true }}>
                                 <button
                                     type="button"
                                     className="flex items-center hover:bg-white hover:text-black transition duration-300 border-2 hover:border-cyan-700 justify-center px-5 py-3  leading-normal text-white bg-cyan-700 border-cyan-700 rounded"
                                 >
-                                    <AiOutlinePlus size="20px" />
-                                    Add
+                                    Add &nbsp; <AiOutlinePlus size="20px" />
                                 </button>
                             </Link>
                         </li>
