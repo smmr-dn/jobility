@@ -15,6 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/" element={<Layout />}>
           <Route index element={<App />}></Route>
           <Route path="/create" element={<JobCreate />}></Route>
+          <Route path="/create" element={<JobCreate />}></Route>
           <Route path="/discussion" element={<JobPosts />}></Route>
           <Route path="/discussion/:id" element={<JobDetail />}></Route>
         </Route>
