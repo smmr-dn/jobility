@@ -4,17 +4,29 @@ import { Link } from "react-router-dom";
 import { BsFillChatHeartFill } from "react-icons/bs";
 
 const JobPosts = () => {
+    const [jobDiscussions, setJobDiscussions] = useState([]);
+
     useEffect(() => {
-        const fetchPosts = async () => {
-            const { data } = await supabase.from("Post").select();
-
-            // set state of posts
-            setJobDiscussions(data);
-        };
-
         fetchPosts();
     }, []);
-    const [jobDiscussions, setJobDiscussions] = useState([]);
+
+    const fetchPosts = async () => {
+        const { data } = await supabase.from("Post").select();
+
+        // set state of posts
+        setJobDiscussions(data);
+    };
+
+    const onClickUpvote = async (likes, id) => {
+        const { data } = await supabase
+            .from("Post")
+            .update({
+                likes: likes + 1,
+            })
+            .eq("id", id);
+
+        fetchPosts();
+    };
 
     return (
         <div className="post-container md:p-32 p-16 flex flex-col w-full items-center min-h-screen font-sans-pro">
@@ -38,7 +50,11 @@ const JobPosts = () => {
 
                                 <span className="flex flex-row items-center justify-center ml-auto font-extrabold text-cyan-700 text-3xl">
                                     {post.likes} &nbsp;
-                                    <BsFillChatHeartFill />
+                                    <BsFillChatHeartFill
+                                        onClick={() =>
+                                            onClickUpvote(post.likes, post.id)
+                                        }
+                                    />
                                 </span>
                             </div>
 

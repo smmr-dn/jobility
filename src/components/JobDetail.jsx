@@ -24,12 +24,10 @@ const JobDetail = () => {
 
   useEffect(() => {
     const getCommentByPostId = async () => {
-      const { data, error } = await supabase.from("Comment").select(
-        `
-        *,
-        Post(*)
-      `
-      );
+      const { data, error } = await supabase
+        .from("Comment")
+        .select("*")
+        .eq("postID", postID.id);
 
       setComments(data);
     };
@@ -69,7 +67,9 @@ const JobDetail = () => {
         Math.floor(minutesDifference / 1440) +
         (Math.floor(minutesDifference / 1440) == 1 ? " day ago" : " days ago")
       );
-    return minutesDifference + " minutes ago";
+    return minutesDifference == 1
+      ? minutesDifference + " minute ago"
+      : minutesDifference + " minutes ago";
   };
 
   return (
