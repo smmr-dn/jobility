@@ -24,12 +24,10 @@ const JobDetail = () => {
 
   useEffect(() => {
     const getCommentByPostId = async () => {
-      const { data, error } = await supabase.from("Comment").select(
-        `
-        *,
-        Post(*)
-      `
-      );
+      const { data, error } = await supabase
+        .from("Comment")
+        .select("*")
+        .eq("postID", postID.id);
 
       setComments(data);
     };
