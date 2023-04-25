@@ -6,8 +6,6 @@ const Navbar = () => {
     const [colorChange, setColorChange] = useState(false);
     const location = useLocation();
 
-    console.log(location);
-
     const changeNavBarColor = () => {
         if (window.scrollY >= 80) setColorChange(true);
         else setColorChange(false);
@@ -19,7 +17,7 @@ const Navbar = () => {
         <nav
             className={`fixed py-4 flex items-center w-full justify-between top-0 z-10 ${
                 colorChange
-                    ? "bg-opacity-50 shadow-lg backdrop-blur-sm bg-white text-black"
+                    ? "bg-opacity-50 shadow-lg backdrop-blur-[2px] bg-white text-black"
                     : "bg-opacity-0 text-white"
             }`}
             style={{
@@ -63,7 +61,7 @@ const Navbar = () => {
                             <Link
                                 to="/discussion"
                                 className={`pl-5 pr-4 ${
-                                    location.pathname === "/discussion"
+                                    location.pathname.includes("/discussion")
                                         ? "text-cyan-700"
                                         : "text-black"
                                 } uppercase rounded md:hover:bg-transparent hover:text-cyan-600 md:p-0`}
