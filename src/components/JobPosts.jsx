@@ -66,6 +66,11 @@ const JobPosts = () => {
       : minutesDifference + " minutes ago";
   };
 
+  const onDeletePost = async (id) => {
+    await supabase.from("Post").delete().eq("id", id);
+    fetchWithCondition(filterByTime);
+  };
+
   return (
     <div className="flex flex-col items-start w-full min-h-screen p-16 post-container md:p-32 font-sans-pro">
       <h1 className="mb-20 font-extrabold text-8xl text-cyan-700">
@@ -113,7 +118,10 @@ const JobPosts = () => {
                   className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75"
                 />
                 <AiFillEdit className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75" />
-                <AiFillDelete className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75" />
+                <AiFillDelete
+                  onClick={() => onDeletePost(post.id)}
+                  className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75"
+                />
               </span>
             </div>
 
