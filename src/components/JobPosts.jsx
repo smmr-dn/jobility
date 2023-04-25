@@ -4,10 +4,23 @@ import { Link } from "react-router-dom";
 import { BsFillChatHeartFill } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
 import { AiFillDelete } from "react-icons/ai";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
 
 const JobPosts = () => {
   const [jobDiscussions, setJobDiscussions] = useState([]);
-
+  const options = [
+    { value: "", label: "-" },
+    { value: "agriculture", label: "Agriculture" },
+    { value: "engineering", label: "Engineering" },
+    { value: "mathematics", label: "Mathematics" },
+    { value: "fine arts", label: "Fine Arts" },
+    { value: "music", label: "Music" },
+    { value: "education", label: "Education" },
+    { value: "human development", label: "Human Development" },
+    { value: "business", label: "Business" },
+  ];
+  const [filterByTag, setTag] = useState("");
   const [filterByTime, setFilterByTime] = useState(true);
 
   useEffect(() => {
@@ -16,7 +29,7 @@ const JobPosts = () => {
 
   const fetchWithCondition = async (filterByTime) => {
     let filter = "";
-    console.log(filterByTime);
+
     if (filterByTime) {
       filter = "created_at";
     } else {
@@ -26,6 +39,14 @@ const JobPosts = () => {
       .from("Post")
       .select()
       .order(filter, { ascending: false });
+    setJobDiscussions(data);
+  };
+
+  const fetchWithTag = async (filterByTag) => {
+    const { data } = await supabase
+      .from("Post")
+      .select()
+      .eq("tag", filterByTag);
     setJobDiscussions(data);
   };
 
@@ -43,6 +64,10 @@ const JobPosts = () => {
   useEffect(() => {
     fetchWithCondition(filterByTime);
   }, [filterByTime]);
+
+  useEffect(() => {
+    fetchWithTag(filterByTag);
+  }, [filterByTag]);
 
   const getTimeDifference = (time) => {
     const today = new Date();
@@ -77,7 +102,7 @@ const JobPosts = () => {
         Discussions
       </h1>
 
-      <div className="flex flex-row justify-start mb-5 space-x-8 text-3xl">
+      <div className="flex flex-row items-center justify-start w-full mb-5 space-x-8 text-3xl">
         <button
           className={`${
             filterByTime ? "font-extrabold" : ""
@@ -94,6 +119,15 @@ const JobPosts = () => {
         >
           Upvotes
         </h3>
+
+        <form className="float-right">
+          <input className="p-1" type="text" placeholder="Search"></input>
+        </form>
+        <Dropdown
+          options={options}
+          onChange={(option) => setTag(option.value)}
+          placeholder="Select an tag"
+        />
       </div>
       {jobDiscussions &&
         jobDiscussions.map((post) => (
@@ -106,9 +140,16 @@ const JobPosts = () => {
               />
               <div className="flex flex-col ml-4 text-left">
                 <h3 className="font-bold">Jane Doe</h3>
-                <span className="font-medium text-black/70">
-                  {getTimeDifference(post.created_at)}
-                </span>
+                <div className="flex flex-row">
+                  <span className="font-medium text-black/70">
+                    {getTimeDifference(post.created_at)}
+                  </span>
+                  {post.edited && (
+                    <span className="font-medium text-black/70">
+                      {post.edited ? " - (edited)" : ""}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <span className="flex flex-row items-center justify-center gap-3 ml-auto text-3xl font-extrabold text-cyan-700">
@@ -117,7 +158,9 @@ const JobPosts = () => {
                   onClick={() => onClickUpvote(post.likes, post.id)}
                   className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75"
                 />
-                <AiFillEdit className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75" />
+                <Link to={`/discussion/edit/${post.id}`}>
+                  <AiFillEdit className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75" />
+                </Link>
                 <AiFillDelete
                   onClick={() => onDeletePost(post.id)}
                   className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75"
