@@ -17,7 +17,7 @@ const Navbar = () => {
         <nav
             className={`fixed py-4 flex items-center w-full justify-between top-0 z-10 ${
                 colorChange
-                    ? "bg-opacity-50 shadow-lg backdrop-blur-sm bg-white text-black"
+                    ? "bg-opacity-50 shadow-lg backdrop-blur-[2px] bg-white text-black"
                     : "bg-opacity-0 text-white"
             }`}
             style={{
