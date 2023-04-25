@@ -19,6 +19,7 @@ const JobDetail = () => {
 
       setPost(data[0]);
     };
+
     getById();
   }, []);
 
