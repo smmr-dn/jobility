@@ -23,17 +23,17 @@ const JobDetail = () => {
   }, []);
 
   useEffect(() => {
-    const getCommentByPostId = async () => {
-      const { data, error } = await supabase
-        .from("Comment")
-        .select("*")
-        .eq("postID", postID.id);
-
-      setComments(data);
-    };
-
     getCommentByPostId();
   }, [post]);
+
+  const getCommentByPostId = async () => {
+    const { data, error } = await supabase
+      .from("Comment")
+      .select("*")
+      .eq("postID", postID.id);
+
+    setComments(data);
+  };
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -48,6 +48,7 @@ const JobDetail = () => {
       .select();
 
     setNewComment("");
+    getCommentByPostId();
   };
 
   const getTimeDifference = (time) => {
