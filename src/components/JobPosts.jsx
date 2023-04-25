@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { supabase } from "../client";
 import { Link } from "react-router-dom";
 import { BsFillChatHeartFill } from "react-icons/bs";
+import { AiFillEdit } from "react-icons/ai";
+import { AiFillDelete } from "react-icons/ai";
 
 const JobPosts = () => {
   const [jobDiscussions, setJobDiscussions] = useState([]);
@@ -104,12 +106,14 @@ const JobPosts = () => {
                 </span>
               </div>
 
-              <span className="flex flex-row items-center justify-center ml-auto text-3xl font-extrabold text-cyan-700">
+              <span className="flex flex-row items-center justify-center gap-3 ml-auto text-3xl font-extrabold text-cyan-700">
                 {post.likes} &nbsp;
                 <BsFillChatHeartFill
                   onClick={() => onClickUpvote(post.likes, post.id)}
                   className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75"
                 />
+                <AiFillEdit className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75" />
+                <AiFillDelete className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75" />
               </span>
             </div>
 
