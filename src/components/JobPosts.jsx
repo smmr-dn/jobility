@@ -30,6 +30,46 @@ const JobPosts = () => {
     fetchPosts();
   };
 
+  const fetchWithCondition = async (filterByTime) => {
+    let filter = "";
+    if (filterByTime) {
+      filter = "created_at";
+    } else {
+      filter = "likes";
+    }
+    const { data } = await supabase
+      .from("Post")
+      .select()
+      .order(filter, { ascending: true });
+    setJobDiscussions(data);
+  };
+
+  useEffect(() => {
+    fetchWithCondition();
+  }, [filterByTime]);
+
+  const getTimeDifference = (time) => {
+    const today = new Date();
+    const orderDateTime = new Date(time);
+
+    const timeDifference = Math.abs(today - orderDateTime);
+    const minutesDifference = Math.floor(timeDifference / 60000);
+
+    if (minutesDifference >= 60)
+      return (
+        Math.floor(minutesDifference / 60) +
+        (Math.floor(minutesDifference / 60) == 1 ? " hour ago" : " hours ago")
+      );
+    else if (minutesDifference >= 1440)
+      return (
+        Math.floor(minutesDifference / 1440) +
+        (Math.floor(minutesDifference / 1440) == 1 ? " day ago" : " days ago")
+      );
+    return minutesDifference == 1
+      ? minutesDifference + " minute ago"
+      : minutesDifference + " minutes ago";
+  };
+
   return (
     <div className="flex flex-col items-start w-full min-h-screen p-16 post-container md:p-32 font-sans-pro">
       <h1 className="mb-20 font-extrabold text-8xl text-cyan-700">
@@ -66,7 +106,7 @@ const JobPosts = () => {
               <div className="flex flex-col ml-4 text-left">
                 <h3 className="font-bold">Jane Doe</h3>
                 <span className="font-medium text-black/70">
-                  {post.created_at}
+                  {getTimeDifference(post.created_at)}
                 </span>
               </div>
 
@@ -88,7 +128,7 @@ const JobPosts = () => {
               </Link>
               <div className="flex flex-row mt-1 space-x-4 text-cyan-700">
                 <span className="p-1 transition ease-in rounded hover:bg-cyan-700 hover:text-white">
-                  #waw
+                  {post.tags}
                 </span>
               </div>
             </div>
