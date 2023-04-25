@@ -5,50 +5,19 @@ import { comment } from "postcss";
 import { RxDotFilled } from "react-icons/rx";
 
 const JobDetail = () => {
-    const postID = useParams();
-    const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState("");
-    const [post, setPost] = useState();
+  const postID = useParams();
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [post, setPost] = useState();
 
-    useEffect(() => {
-        const getById = async () => {
-            const { data, error } = await supabase
-                .from("Post")
-                .select()
-                .eq("id", postID.id);
+  useEffect(() => {
+    const getById = async () => {
+      const { data, error } = await supabase
+        .from("Post")
+        .select()
+        .eq("id", postID.id);
 
-            setPost(data[0]);
-        };
-
-        getById();
-    }, []);
-
-    useEffect(() => {
-        const getCommentByPostId = async () => {
-            const { data, error } = await supabase
-                .from("Comment")
-                .select("*")
-                .eq("postID", postID.id);
-
-            setComments(data);
-        };
-
-        getCommentByPostId();
-    }, [post]);
-
-    const onSubmit = async (event) => {
-        event.preventDefault();
-
-        await supabase
-            .from("Comment")
-            .insert({
-                postID: postID.id,
-                created_at: new Date(),
-                comment: newComment,
-            })
-            .select();
-
-        setNewComment("");
+      setPost(data[0]);
     };
 
     const getTimeDifference = (time) => {
@@ -166,9 +135,12 @@ const JobDetail = () => {
                         </div>
                     </div>
                 </div>
-            )}
+              ))}
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default JobDetail;
