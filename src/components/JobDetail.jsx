@@ -23,19 +23,19 @@ const JobDetail = () => {
   }, []);
 
   useEffect(() => {
-    const getCommentByPostId = async () => {
-      const { data, error } = await supabase.from("Comment").select(
-        `
-        *,
-        Post(*)
-      `
-      );
-
-      setComments(data);
-    };
-
     getCommentByPostId();
   }, [post]);
+
+  const getCommentByPostId = async () => {
+    const { data, error } = await supabase
+      .from("Comment")
+      .select("*")
+      .eq("postID", postID.id);
+
+    setComments(data);
+  };
+
+  getCommentByPostId();
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -69,16 +69,20 @@ const JobDetail = () => {
         Math.floor(minutesDifference / 1440) +
         (Math.floor(minutesDifference / 1440) == 1 ? " day ago" : " days ago")
       );
-    return minutesDifference + " minutes ago";
+    return minutesDifference == 1
+      ? minutesDifference + " minute ago"
+      : minutesDifference + " minutes ago";
   };
 
   return (
     <div>
       {post && (
-        <div id="post-container">
-          <img src={post.imageURL} />
-          <h1>{post.title}</h1>
-          <p>{post.content}</p>
+        <div className="flex flex-col items-center w-full min-h-screen p-16 post-container md:p-32 font-sans-pro">
+          <img src={post.imageURL} className="mb-10" />
+          <h1 className="mb-10 font-extrabold text-8xl">{post.title}</h1>
+          <p className="flex items-start justify-start text-xl">
+            {post.content}
+          </p>
 
           <div id="comment-section">
             <h1>Comments</h1>
