@@ -58,7 +58,7 @@ const JobDetail = () => {
     const timeDifference = Math.abs(today - orderDateTime);
     const minutesDifference = Math.floor(timeDifference / 60000);
 
-    if (minutesDifference >= 60)
+    if (minutesDifference >= 60 && minutesDifference < 1440)
       return (
         Math.floor(minutesDifference / 60) +
         (Math.floor(minutesDifference / 60) == 1 ? " hour ago" : " hours ago")
