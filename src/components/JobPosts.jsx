@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const JobPosts = () => {
   const [jobDiscussions, setJobDiscussions] = useState([]);
+  const [sortByDate, setSortByDate] = useState("");
 
   useEffect(() => {
     fetchPosts();
