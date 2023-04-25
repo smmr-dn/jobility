@@ -1,9 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 const Navbar = () => {
     const [colorChange, setColorChange] = useState(false);
+    const location = useLocation();
+
+    console.log(location);
 
     const changeNavBarColor = () => {
         if (window.scrollY >= 80) setColorChange(true);
@@ -32,13 +35,13 @@ const Navbar = () => {
                         className="h-6 ml-2 mr-3 sm:h-9"
                         alt="Website Logo"
                     />
-                    <span className="text-xl font-bold font-sans-pro text-black uppercase">
+                    <span className="text-xl font-bold text-black uppercase font-sans-pro">
                         Jobility
                     </span>
                 </Link>
 
                 <div
-                    className="w-full flex items-center px-3 justify-center md:w-auto"
+                    className="flex items-center justify-center w-full px-3 md:w-auto"
                     id="navbar"
                 >
                     <ul
@@ -47,7 +50,11 @@ const Navbar = () => {
                         <li>
                             <Link
                                 to="/"
-                                className="pl-5 pr-4 rounded md:hover:bg-transparent uppercase  text-black md:p-0"
+                                className={`pl-5 pr-4 ${
+                                    location.pathname === "/"
+                                        ? "text-cyan-700"
+                                        : "text-black"
+                                } uppercase rounded md:hover:bg-transparent hover:text-cyan-600 md:p-0`}
                             >
                                 Home
                             </Link>
@@ -55,7 +62,11 @@ const Navbar = () => {
                         <li>
                             <Link
                                 to="/discussion"
-                                className=" pl-5 pr-4 rounded uppercase md:hover:bg-transparent text-black md:p-0"
+                                className={`pl-5 pr-4 ${
+                                    location.pathname === "/discussion"
+                                        ? "text-cyan-700"
+                                        : "text-black"
+                                } uppercase rounded md:hover:bg-transparent hover:text-cyan-600 md:p-0`}
                             >
                                 Discussion
                             </Link>
@@ -63,7 +74,11 @@ const Navbar = () => {
                         <li>
                             <Link
                                 to="/articles"
-                                className="pl-5 pr-4 rounded uppercase md:hover:bg-transparent text-black md:p-0"
+                                className={`pl-5 pr-4 ${
+                                    location.pathname === "/articles"
+                                        ? "text-cyan-700"
+                                        : "text-black"
+                                } uppercase rounded md:hover:bg-transparent hover:text-cyan-600 md:p-0`}
                             >
                                 Articles
                             </Link>
@@ -72,7 +87,7 @@ const Navbar = () => {
                             <Link to="/create" state={{ order: true }}>
                                 <button
                                     type="button"
-                                    className="flex items-center hover:bg-white hover:text-black transition duration-300 border-2 hover:border-cyan-700 justify-center px-5 py-3  leading-normal text-white bg-cyan-700 border-cyan-700 rounded"
+                                    className="flex items-center justify-center px-5 py-3 leading-normal text-white transition duration-300 border-2 rounded hover:bg-white hover:text-black hover:border-cyan-700 bg-cyan-700 border-cyan-700"
                                 >
                                     Add &nbsp; <AiOutlinePlus size="20px" />
                                 </button>
