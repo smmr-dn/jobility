@@ -20,6 +20,33 @@ const JobDetail = () => {
       setPost(data[0]);
     };
 
+  const getCommentByPostId = async () => {
+    const { data, error } = await supabase
+      .from("Comment")
+      .select("*")
+      .eq("postID", postID.id);
+
+    setComments(data);
+  };
+
+  getCommentByPostId();
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+
+    await supabase
+      .from("Comment")
+      .insert({
+        postID: postID.id,
+        created_at: new Date(),
+        comment: newComment,
+      })
+      .select();
+
+    setNewComment("");
+  };
+
+            
     const getTimeDifference = (time) => {
         const today = new Date();
         const orderDateTime = new Date(time);
