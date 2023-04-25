@@ -3,11 +3,11 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 const Layout = () => {
     return (
-        <>
+        <div className="bg-neutral-100">
             <Navbar />
 
             <Outlet />
-        </>
+        </div>
     );
 };
 
