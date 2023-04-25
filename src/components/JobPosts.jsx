@@ -9,13 +9,21 @@ const JobPosts = () => {
   const [filterByTime, setFilterByTime] = useState(true);
 
   useEffect(() => {
-    fetchPosts();
+    fetchWithCondition(filterByTime);
   }, []);
 
-  const fetchPosts = async () => {
-    const { data } = await supabase.from("Post").select();
-
-    // set state of posts
+  const fetchWithCondition = async (filterByTime) => {
+    let filter = "";
+    console.log(filterByTime);
+    if (filterByTime) {
+      filter = "created_at";
+    } else {
+      filter = "likes";
+    }
+    const { data } = await supabase
+      .from("Post")
+      .select()
+      .order(filter, { ascending: false });
     setJobDiscussions(data);
   };
 
@@ -27,25 +35,11 @@ const JobPosts = () => {
       })
       .eq("id", id);
 
-    fetchPosts();
-  };
-
-  const fetchWithCondition = async (filterByTime) => {
-    let filter = "";
-    if (filterByTime) {
-      filter = "created_at";
-    } else {
-      filter = "likes";
-    }
-    const { data } = await supabase
-      .from("Post")
-      .select()
-      .order(filter, { ascending: true });
-    setJobDiscussions(data);
+    fetchWithCondition(filterByTime);
   };
 
   useEffect(() => {
-    fetchWithCondition();
+    fetchWithCondition(filterByTime);
   }, [filterByTime]);
 
   const getTimeDifference = (time) => {
@@ -55,12 +49,12 @@ const JobPosts = () => {
     const timeDifference = Math.abs(today - orderDateTime);
     const minutesDifference = Math.floor(timeDifference / 60000);
 
-    if (minutesDifference >= 60)
+    if (minutesDifference >= 60 && minutesDifference < 1440)
       return (
         Math.floor(minutesDifference / 60) +
         (Math.floor(minutesDifference / 60) == 1 ? " hour ago" : " hours ago")
       );
-    else if (minutesDifference >= 1440)
+    if (minutesDifference >= 1440)
       return (
         Math.floor(minutesDifference / 1440) +
         (Math.floor(minutesDifference / 1440) == 1 ? " day ago" : " days ago")
@@ -126,11 +120,13 @@ const JobPosts = () => {
               >
                 <h2 className="text-4xl font-extrabold">{post.title}</h2>
               </Link>
-              <div className="flex flex-row mt-1 space-x-4 text-cyan-700">
-                <span className="p-1 transition ease-in rounded hover:bg-cyan-700 hover:text-white">
-                  {post.tags}
-                </span>
-              </div>
+              {post.tag && (
+                <div className="flex flex-row mt-1 space-x-4 text-cyan-700">
+                  <span className="p-1 transition ease-in rounded hover:bg-cyan-700 hover:text-white">
+                    #{post.tag}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         ))}
