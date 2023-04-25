@@ -68,22 +68,6 @@ const JobPosts = () => {
             </Link>
           ))}
       </div>
-
-      <div className="post-container">
-        {jobDiscussions &&
-          jobDiscussions.map((post) => (
-            <div className="post-card">
-              <p>{post.created_at}</p>
-              <Link to={`/discussion/${post.id}`}>
-                <h2>{post.title}</h2>
-              </Link>
-              <p>{post.likes} likes</p>
-              <BsFillChatHeartFill
-                onClick={() => onClickUpvote(post.likes, post.id)}
-              ></BsFillChatHeartFill>
-            </div>
-          ))}
-      </div>
     </>
   );
 };
