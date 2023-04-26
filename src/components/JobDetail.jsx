@@ -9,6 +9,7 @@ const JobDetail = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [post, setPost] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const getById = async () => {
@@ -22,6 +23,16 @@ const JobDetail = () => {
 
     getById();
   }, []);
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  const getCurrentUser = async () => {
+    const email = localStorage.getItem("email");
+    const { data } = await supabase.from("User").select().eq("email", email);
+    setCurrentUser(data[0]);
+  };
 
   const getCommentByPostId = async () => {
     const { data, error } = await supabase
@@ -49,6 +60,7 @@ const JobDetail = () => {
       .select();
 
     setNewComment("");
+    getCommentByPostId();
   };
 
   const getTimeDifference = (time) => {
@@ -82,12 +94,12 @@ const JobDetail = () => {
             <h1 className="mb-5 text-6xl font-extrabold">{post.title}</h1>
             <div className="flex flex-row space-x-4">
               <img
-                src="../src/img/suitcase.png"
+                src={currentUser.profileURL}
                 className="mt-2 border border-black rounded-full w-9 h-9"
                 alt="Website Logo"
               />
               <div className="flex flex-col text-left">
-                <span className="text-xl">{"Jane Doe"}</span>
+                <span className="text-xl">{currentUser.username}</span>
                 <span className="text-black/70">
                   Posted on: {getTimeDifference(post.created_at)}
                 </span>
@@ -101,7 +113,7 @@ const JobDetail = () => {
 
               <div className="flex flex-row space-x-4">
                 <img
-                  src="../src/img/suitcase.png"
+                  src={currentUser.profileURL}
                   className="mt-2 border border-black rounded-full w-9 h-9"
                   alt="Website Logo"
                 />

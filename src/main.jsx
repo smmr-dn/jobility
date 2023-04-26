@@ -9,6 +9,8 @@ import JobPosts from "./components/JobPosts";
 import JobDetail from "./components/JobDetail";
 import Articles from "./components/Articles";
 import JobEdit from "./components/JobEdit";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -21,6 +23,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/discussion" element={<JobPosts />}></Route>
           <Route path="/discussion/:id" element={<JobDetail />}></Route>
           <Route path="/discussion/edit/:id" element={<JobEdit />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

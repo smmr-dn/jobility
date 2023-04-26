@@ -2,6 +2,8 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
+import { supabase } from "../client";
+
 const Navbar = () => {
   const [colorChange, setColorChange] = useState(false);
   const location = useLocation();
@@ -12,6 +14,24 @@ const Navbar = () => {
   };
 
   window.addEventListener("scroll", changeNavBarColor);
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Fetch the current user
+    getCurrentUser();
+  }, []);
+
+  const getCurrentUser = async () => {
+    const email = localStorage.getItem("email");
+    const { data } = await supabase.from("User").select().eq("email", email);
+    setUser(data[0]);
+  };
+
+  const onLogout = () => {
+    localStorage.removeItem("email");
+    setUser(null);
+  };
 
   return (
     <nav
@@ -45,6 +65,11 @@ const Navbar = () => {
           <ul
             className={`flex bg-black list-none md:flex-row items-center justify-center md:space-x-8 md:mt-0 md:text-base md:font-medium md:border-0 bg-transparent`}
           >
+            {user && (
+              <span className="text-black text-md font-sans-pro">
+                Welcome, {user.username}
+              </span>
+            )}
             <li>
               <Link
                 to="/"
@@ -79,6 +104,45 @@ const Navbar = () => {
                 Articles
               </Link>
             </li>
+            {!user && (
+              <li>
+                <Link
+                  to="/login"
+                  className={`pl-5 pr-4 ${
+                    location.pathname === "/login"
+                      ? "text-cyan-700"
+                      : "text-black"
+                  } uppercase rounded md:hover:bg-transparent hover:text-cyan-600 md:p-0`}
+                >
+                  Log in
+                </Link>
+              </li>
+            )}
+            {!user && (
+              <li>
+                <Link
+                  to="/signup"
+                  className={`pl-5 pr-4 ${
+                    location.pathname === "/signup"
+                      ? "text-cyan-700"
+                      : "text-black"
+                  } uppercase rounded md:hover:bg-transparent hover:text-cyan-600 md:p-0`}
+                >
+                  Sign up
+                </Link>
+              </li>
+            )}
+            {user && (
+              <li>
+                <button
+                  onClick={onLogout}
+                  type="button"
+                  className="flex items-center justify-center px-5 py-3 leading-normal text-white transition duration-300 border-2 rounded hover:bg-white hover:text-black hover:border-cyan-700 bg-cyan-700 border-cyan-700"
+                >
+                  Log out
+                </button>
+              </li>
+            )}
             <li>
               <Link to="/create" state={{ order: true }}>
                 <button

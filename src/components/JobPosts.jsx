@@ -22,10 +22,21 @@ const JobPosts = () => {
   ];
   const [filterByTag, setTag] = useState("");
   const [filterByTime, setFilterByTime] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     fetchWithCondition(filterByTime);
   }, []);
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  const getCurrentUser = async () => {
+    const email = localStorage.getItem("email");
+    const { data } = await supabase.from("User").select().eq("email", email);
+    setCurrentUser(data[0]);
+  };
 
   const fetchWithCondition = async (filterByTime) => {
     let filter = "";
@@ -126,20 +137,21 @@ const JobPosts = () => {
         <Dropdown
           options={options}
           onChange={(option) => setTag(option.value)}
-          placeholder="Select an tag"
+          placeholder="Select a tag"
         />
       </div>
       {jobDiscussions &&
+        currentUser &&
         jobDiscussions.map((post) => (
           <div className="flex flex-col items-start w-full px-5 py-3 mb-3 transition ease-in-out bg-white border rounded-lg post-card border-neutral-500 hover:scale-110">
             <div className="flex flex-row items-center w-full">
               <img
-                src="../src/img/suitcase.png"
+                src={currentUser.profileURL}
                 className="w-10 h-10 border border-black rounded-full"
                 alt="Website Logo"
               />
               <div className="flex flex-col ml-4 text-left">
-                <h3 className="font-bold">Jane Doe</h3>
+                <h3 className="font-bold">{currentUser.username}</h3>
                 <div className="flex flex-row">
                   <span className="font-medium text-black/70">
                     {getTimeDifference(post.created_at)}
@@ -158,13 +170,17 @@ const JobPosts = () => {
                   onClick={() => onClickUpvote(post.likes, post.id)}
                   className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75"
                 />
-                <Link to={`/discussion/edit/${post.id}`}>
-                  <AiFillEdit className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75" />
-                </Link>
-                <AiFillDelete
-                  onClick={() => onDeletePost(post.id)}
-                  className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75"
-                />
+                {currentUser.email === localStorage.getItem("email") && (
+                  <Link to={`/discussion/edit/${post.id}`}>
+                    <AiFillEdit className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75" />
+                  </Link>
+                )}
+                {currentUser.email === localStorage.getItem("email") && (
+                  <AiFillDelete
+                    onClick={() => onDeletePost(post.id)}
+                    className="transition-transform transform outline-none hover:text-cyan-500 focus:ring-4 active:scale-75"
+                  />
+                )}
               </span>
             </div>
 
